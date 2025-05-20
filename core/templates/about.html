@@ -1,0 +1,104 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}About | CookConnect{% endblock  %}
+
+{% block content %}
+
+<style>
+  .hero.contact-hero {
+    position: relative; /* Needed for overlay positioning */
+    background-image: url('{% static "images/about-cover-photo.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 400px; /* Example height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .hero.contact-hero .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Black color with 50% opacity */
+    z-index: 1;
+  }
+  
+  .hero.contact-hero .container,
+  .hero.contact-hero .hero-content {
+    position: relative;
+    z-index: 2; /* Make sure text stays above the overlay */
+  }
+  
+</style>
+
+  <!-- Hero Section -->
+  <div class="hero contact-hero">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="hero-content text-center">
+        <h1 class="hero-title">About CookConnect</h1>
+        <p class="hero-subtitle">A Community for Food Lovers to Share and Discover Recipes</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mission Section -->
+  <div class="container my-5">
+    <h2 class="section-title text-center">Our Mission</h2>
+    <div class="row">
+      <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+        <h4>
+          At CookConnect, we believe food brings people together. Our platform is designed to inspire home cooks, food enthusiasts, and recipe creators to share their culinary creations with the world. Whether you're a seasoned chef or a beginner in the kitchen, CookConnect is your space to explore, create, and connect through the universal language of food.
+        </h4><br>
+        <h4>
+          Founded in 2025, CookConnect is more than just a recipe blog—it's a vibrant community where every dish tells a story. From grandma’s secret sauce to innovative vegan delights, we celebrate the diversity of flavors and the joy of cooking.
+        </h4>
+      </div>
+      <div class="col-md-6">
+        <img src="{% static 'images/about-hero.jpg' %}" class="img-fluid rounded" alt="CookConnect Community">
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Section -->
+  <div class="container my-5">
+    <h2 class="section-title text-center">Join Our Community</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card community-card h-100">
+          <div class="card-body text-center">
+            <i class="fas fa-utensils fa-3x mb-3 text-recipe"></i>
+            <h5 class="card-title">Share Your Recipes</h5>
+            <p class="card-text">Contribute your favorite dishes and inspire others with your culinary creations.</p>
+            <a href="{% url 'add_recipe' %}" class="btn btn-recipe btn-sm">Get Started</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card community-card h-100">
+          <div class="card-body text-center">
+            <i class="fas fa-heart fa-3x mb-3 text-recipe"></i>
+            <h5 class="card-title">Connect with Foodies</h5>
+            <p class="card-text">Like, comment, and follow other cooks to build your foodie network.</p>
+            <a href="{% url 'home' %}" class="btn btn-recipe btn-sm">Explore Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card community-card h-100">
+          <div class="card-body text-center">
+            <i class="fas fa-star fa-3x mb-3 text-recipe"></i>
+            <h5 class="card-title">Discover New Flavors</h5>
+            <p class="card-text">Find recipes from around the globe to spice up your kitchen.</p>
+            <a href="{% url 'home' %}" class="btn btn-recipe btn-sm">Find Recipes</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

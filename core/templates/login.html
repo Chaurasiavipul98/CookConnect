@@ -1,0 +1,114 @@
+{% extends 'index.html' %}
+{%  load static %}
+
+{% block title %}Login | CookConnect{% endblock  %}
+
+{% block content %}
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom right, #fff8f0, #fff);
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+          }
+
+          .input-group {
+              margin-bottom: 20px;
+          }
+  
+          .input-group label {
+              display: block;
+              color: #555;
+              margin-bottom: 8px;
+          }
+  
+          .input-group input {
+              width: 100%;
+              padding: 12px;
+              border-radius: 10px;
+              border: 1px solid #ccc;
+              font-size: 14px;
+              transition: border 0.3s;
+          }
+  
+          .input-group input:focus {
+              border-color: #f9a825;
+              outline: none;
+          }
+          .login-btn {
+            background: linear-gradient(to right, #f9a825, #f57f17);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .login-btn:hover {
+            box-shadow: 0 5px 15px rgba(249, 168, 37, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .bottom-links {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .bottom-links a {
+            color: #f57f17;
+            text-decoration: none;
+        }
+        .error-message {
+          color: crimson;
+          text-align: center;
+          margin-bottom: 15px;
+      }
+</style>
+
+<div class="d-flex justify-content-center align-items-center">
+    <div class="login-container">
+      <h2>Login to CookConnect</h2>
+      {% if messages %}
+          {% for message in messages %}
+              <div class="error-message">{{ message }}</div>
+          {% endfor %}
+      {% endif %}
+      <form method="post">
+          {% csrf_token %}
+          <div class="input-group">
+              <label for="username">Username</label>
+              <input type="text" name="username" required>
+          </div>
+          <div class="input-group">
+              <label for="password">Password</label>
+              <input type="password" name="password" required>
+          </div>
+          <button class="login-btn" type="submit">Login</button>
+      </form>
+      <div class="bottom-links">
+        <p><a href="#">Forgot password?</a></p>
+            <p>Don’t have an account? <a href="{% url 'register' %}">Register here</a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock  %}

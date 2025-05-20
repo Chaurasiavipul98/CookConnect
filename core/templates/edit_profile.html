@@ -1,0 +1,156 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Edit Profile | CookConnect{% endblock  %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Edit Profile</h2>
+    <a href="{% url 'profile' %}" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left"></i> Back to Profile
+    </a>
+  </div>
+
+  <!-- Profile Card -->
+  <div class="card shadow-sm">
+    <div class="row g-0">
+      <!-- Left Column: Avatar & Stats -->
+      <div class="col-lg-4 border-end">
+        <div class="text-center p-4">
+          <div class="position-relative d-inline-block mb-3">
+            <img id="avatarPreview"
+                 src="{{ request.user.profile_pic.url }}"
+                 class="rounded-circle img-thumbnail"
+                 style="width:140px; height:140px; object-fit:cover;"
+                 alt="Avatar">
+            <!-- Upload icon overlay -->
+            <label for="id_profile_pic"
+                   class="position-absolute bottom-0 end-0 bg-white rounded-circle p-1"
+                   style="cursor:pointer;">
+              <i class="bi bi-camera-fill fs-5"></i>
+            </label>
+          </div>
+          <!-- Progress Bar -->
+          <h6 class="mt-3">Profile Completion</h6>
+          <div class="progress mb-2" style="height:8px;">
+            <div class="progress-bar" role="progressbar"
+                 style="width: {{ request.user.profile_completion }}%;"
+                 aria-valuenow="{{ request.user.profile_completion }}"
+                 aria-valuemin="0" aria-valuemax="100">
+            </div>
+          </div>
+          <small class="text-muted">{{ request.user.profile_completion }}% complete</small>
+
+          <!-- Quick Stats -->
+          <ul class="list-group list-group-flush mt-4">
+            <li class="list-group-item py-2">
+              <i class="bi bi-journal-text me-2"></i>
+              <strong>{{ request.user.recipes.count }}</strong> Recipes
+            </li>
+            <li class="list-group-item py-2">
+              <i class="bi bi-people-fill me-2"></i>
+              <strong>{{ request.user.total_followers }}</strong> Followers
+            </li>
+            <li class="list-group-item py-2">
+              <i class="bi bi-person-check-fill me-2"></i>
+              <strong>{{ request.user.total_following }}</strong> Following
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right Column: Edit Form -->
+      <div class="col-lg-8">
+        <div class="p-4">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Username (readonly) -->
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input type="text" class="form-control" value="{{ request.user.username }}" readonly>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="id_email" class="form-label">Email</label>
+              <input type="email" name="email" id="id_email"
+                     value="{{ request.user.email }}"
+                     class="form-control" required>
+            </div>
+
+            <!-- Bio -->
+            <div class="mb-3">
+              <label for="id_bio" class="form-label">Bio</label>
+              {{ form.bio }}
+            </div>
+
+            <!-- Location & Website Row -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="id_location" class="form-label">Location</label>
+                {{ form.location }}
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="id_website" class="form-label">Website</label>
+                {{ form.website }}
+              </div>
+            </div>
+
+            <!-- DOB & Gender Row -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="id_dob" class="form-label">Date of Birth</label>
+                {{ form.dob }}
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="id_gender" class="form-label">Gender</label>
+                {{ form.gender }}
+              </div>
+            </div>
+
+            <!-- Profile Pic Input (hidden) -->
+            <input type="file"
+               name="profile_pic"
+               id="id_profile_pic"
+               accept="image/*"
+               class="d-none">
+
+            <!-- Save Button -->
+            <div class="mt-4 text-end">
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-check-lg me-1"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional: Small script to trigger the hidden file input -->
+<script>
+  document.querySelector('label[for="id_profile_pic"]').addEventListener('click', () => {
+    document.getElementById('id_profile_pic').click();
+  });
+    
+  const input   = document.getElementById('id_profile_pic');
+  const preview = document.getElementById('avatarPreview');
+
+  input.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Create a temporary URL for the file :contentReference[oaicite:1]{index=1}
+    const url = URL.createObjectURL(file);
+    preview.src = url;
+
+    // Clean up once the image has loaded :contentReference[oaicite:2]{index=2}
+    preview.onload = () => URL.revokeObjectURL(url);
+  });
+</script>
+  
+{% endblock %}

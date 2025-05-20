@@ -1,0 +1,22 @@
+# Ignore compiled Python files and cache
+__pycache__/
+*.pyc
+
+# Ignore SQLite database (optional)
+db.sqlite3
+
+# Environments
+.env
+.venv/
+
+# Ignore media/uploads if needed
+/media/
+/staticfiles/
+
+# VS Code or other IDE config folders
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

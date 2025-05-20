@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block title %}{{ user_profile.username }} | CookConnect{% endblock  %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<div class="bg-white">
+  <div class="container py-4">
+    <div class="d-flex align-items-center mb-4">
+      <img src="{{ user_profile.profile_pic.url }}" alt="Profile Picture" class="rounded-circle" width="120" height="120">
+      <div class="ms-4">
+        <h2>{{ user_profile.username }}</h2>
+        <p>{{ user_profile.bio }}</p>
+        {% if user != user_profile %}
+          {% if is_following %}
+            <button class="btn btn-outline-danger">Unfollow</button>
+          {% else %}
+            <button class="btn btn-outline-primary">Follow</button>
+          {% endif %}
+        {% endif %}
+        <p class="mt-2 text-muted">
+          Followers: {{ follower_count }} | Following: {{ following_count }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock  %} 

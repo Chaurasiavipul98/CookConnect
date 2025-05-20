@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Contact | CookConnect{% endblock  %}
+
+{% block content %}
+
+<style>
+  .hero.contact-hero {
+    position: relative; /* Needed for overlay positioning */
+    background-image: url('{% static "images/contact-cover-photo.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 400px; /* Example height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .hero.contact-hero .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Black color with 50% opacity */
+    z-index: 1;
+  }
+  
+  .hero.contact-hero .container,
+  .hero.contact-hero .hero-content {
+    position: relative;
+    z-index: 2; /* Make sure text stays above the overlay */
+  }
+  
+</style>
+
+<div class="hero contact-hero">
+  <div class="overlay"></div>  <!-- ADD this overlay div -->
+  <div class="container">
+    <div class="hero-content text-center">
+      <h1 class="hero-title">Get in Touch</h1>
+      <p class="hero-subtitle">We’d Love to Hear from You!</p>
+    </div>
+  </div>
+</div>
+
+  
+
+  <!-- Contact Form -->
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-6">
+        <h2 class="section-title">Send Us a Message</h2>
+        <form method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <h2 class="section-title">Connect with Us</h2>
+        <p>Have questions, suggestions, or just want to chat about food? Reach out to us!</p>
+        <ul class="list-unstyled">
+          <li><i class="fas fa-envelope me-2 text-recipe"></i> <a href="mailto:support@cookconnect.com">support@cookconnect.com</a></li>
+          <li><i class="fab fa-twitter me-2 text-recipe"></i> <a href="https://twitter.com/cookconnect" target="_blank">@CookConnect</a></li>
+          <li><i class="fab fa-instagram me-2 text-recipe"></i> <a href="https://instagram.com/cookconnect" target="_blank">@CookConnect</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

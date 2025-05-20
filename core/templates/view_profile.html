@@ -1,0 +1,89 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}{{ request.user.username }} | CookConnect{% endblock  %}
+
+{% block content %}
+<div class="container py-5 min-vh-100">
+  <!-- Header: Username & Actions -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+    <div class="d-flex align-items-center">
+      <img src="{{ request.user.profile_pic.url }}"
+           class="rounded-circle me-3"
+           style="width:120px; height:120px; object-fit:cover;"
+           alt="{{ request.user.username }}">
+      <div>
+        <h3 class="mb-1">{{ request.user.username }}</h3>
+        <div class="d-flex gap-3">
+          <span><strong>{{ request.user.recipes.count }}</strong> recipes</span>
+          <span><strong>{{ request.user.total_followers }}</strong> followers</span>
+          <span><strong>{{ request.user.total_following }}</strong> following</span>
+        </div>
+      </div>
+    </div>
+    <div class="mt-3 mt-md-0">
+      <a href="{% url 'edit_profile' %}" class="btn btn-outline-secondary me-2">
+        <i class="bi bi-pencil-fill"></i> Edit Profile
+      </a>
+      <a href="{% url 'add_recipe' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> New Recipe
+      </a>
+    </div>
+  </div>
+
+  <!-- Bio & Details Card -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      {% if request.user.bio %}
+        <p class="mb-2">{{ request.user.bio }}</p>
+      {% endif %}
+      <div class="d-flex flex-wrap text-muted small">
+        {% if request.user.location %}
+          <div class="me-4 mb-2">
+            <i class="bi bi-geo-alt-fill me-1"></i>{{ request.user.location }}
+          </div>
+        {% endif %}
+        {% if request.user.website %}
+          <div class="me-4 mb-2">
+            <i class="bi bi-link-45deg me-1"></i>
+            <a href="{{ request.user.website }}" target="_blank">{{ request.user.website|cut:"https://" }}</a>
+          </div>
+        {% endif %}
+        {% if request.user.dob %}
+          <div class="me-4 mb-2">
+            <i class="bi bi-calendar-fill me-1"></i>
+            Born {{ request.user.dob|date:"F j, Y" }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipes Grid -->
+  <div class="row g-3">
+    {% for recipe in request.user.recipes.all %}
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card h-100 border-0 shadow-sm">
+        <a href="{% url 'recipe_detail' recipe.pk %}" class="stretched-link"></a>
+        {% if recipe.image %}
+          <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}" style="height:180px; object-fit:cover;">
+        {% else %}
+          <div class="bg-light d-flex align-items-center justify-content-center" style="height:180px;">
+            <i class="bi bi-file-earmark-text fs-1 text-secondary"></i>
+          </div>
+        {% endif %}
+        <div class="card-body py-2 px-2">
+          <h6 class="card-title mb-1 text-truncate">{{ recipe.title }}</h6>
+          <div class="d-flex justify-content-between align-items-center small text-muted">
+            <span><i class="bi bi-heart-fill text-danger me-1"></i>{{ recipe.total_likes }}</span>
+            <span><i class="bi bi-chat-left-text-fill me-1"></i>{{ recipe.comments.count }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+      <p class="text-center text-muted">You haven’t added any recipes yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

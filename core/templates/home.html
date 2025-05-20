@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <div class="hero rounded-4">
+    <video autoplay muted loop playsinline class="hero-video">
+      <source src="{% static 'videos/hero-video.mp4' %}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="hero-overlay">
+      <div class="container">
+        <div class="hero-content">
+          <h1 class="hero-title">CookConnect</h1>
+          <p class="hero-subtitle">Join Our Community of Food Lovers</p>
+          <div class="hero-cta">
+            <a href="{% url 'add_recipe' %}" class="btn btn-recipe btn-lg">Share Your Recipe</a>
+            <a href="#recipes" class="btn btn-outline-light btn-lg mt-3">Explore Recipes</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Recipes Carousel -->
+  <div class="container my-5">
+    <h2 class="section-title text-center">Featured Recipes</h2>
+    <div id="recipeCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for recipe in featured_recipes %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="row">
+              <div class="col-md-6">
+                <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}{% static 'images/default_recipe.jpg' %}{% endif %}" class="d-block w-100 carousel-img" alt="{{ recipe.title }}">
+              </div>
+              <div class="col-md-6 d-flex align-items-center">
+                <div class="carousel-caption">
+                  <h3>{{ recipe.title }}</h3>
+                  <p>{{ recipe.description|truncatewords:30 }}</p>
+                  <p class="recipe-meta">
+                    <i class="bi bi-heart-fill"></i> {{ recipe.likes.count }} likes |
+                    <i class="bi bi-chat-left-dots-fill"></i> {{ recipe.comments.count }} comments
+                  </p>
+                  <a href="{% url 'recipe_detail' recipe.pk %}" class="btn btn-recipe">View Recipe</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#recipeCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#recipeCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Latest Recipes -->
+  <div class="container my-5" id="recipes">
+    <h2 class="section-title text-center">Latest Recipes</h2>
+    <div class="row">
+      {% for recipe in recipes %}
+        <div class="col-md-4 mb-4">
+          <div class="card recipe-card h-100">
+            <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}{% static 'images/default_recipe.jpg' %}{% endif %}" class="card-img-top" alt="{{ recipe.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ recipe.title }}</h5>
+              <p class="card-text description">{{ recipe.description|truncatewords:15 }}</p>
+              <div class="recipe-meta">
+                <span><i class="bi bi-heart-fill"></i> {{ recipe.likes.count }}</span>
+                <span><i class="bi bi-chat-left-dots-fill"></i> {{ recipe.comments.count }}</span>
+              </div>
+              <a href="{% url 'recipe_detail' recipe.pk %}" class="btn btn-recipe btn-sm">View Recipe</a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center text-muted">No recipes found yet. Be the first to share!</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Subscription Form -->
+  <div class="container my-5 subscription">
+    <h2 class="section-title text-center">Stay Connected</h2>
+    <p class="text-center">Get the latest recipes and updates delivered to your inbox.</p>
+    <form class="d-flex justify-content-center">
+      <input type="email" class="form-control me-2" placeholder="Enter your email" style="max-width: 300px;">
+      <button type="submit" class="btn btn-recipe">Subscribe</button>
+    </form>
+  </div>
+ 
+{% endblock %}
